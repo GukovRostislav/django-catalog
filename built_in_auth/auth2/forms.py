@@ -1,6 +1,10 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, UsernameField
 from .models import CustomUser
+from .models import Projects
+from django.utils.timezone import now
 
 
 class UserLoginForm(AuthenticationForm):
@@ -79,3 +83,39 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email')
+
+
+class ProjectCreationForm(forms.ModelForm):
+    preview = forms.ImageField()
+    title = forms.CharField(
+        label="Title",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'floatingInput',
+        }
+        )
+    )
+    text = forms.CharField(
+        label="Text",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'floatingInput',
+        }
+        )
+    )
+    created_date = forms.DateTimeField(
+        initial=datetime.date.today(),
+        widget=forms.HiddenInput,
+    )
+    author = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        widget=forms.HiddenInput()
+    )
+    likes = forms.IntegerField(
+        widget=forms.HiddenInput,
+        initial=0
+    )
+
+    class Meta:
+        model = Projects
+        fields = "__all__"

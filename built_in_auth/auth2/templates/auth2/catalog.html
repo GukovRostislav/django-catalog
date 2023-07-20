@@ -4,7 +4,7 @@
 <div class="d-flex flex-wrap justify-content-center">
   {% for element in catalog %}
 <div class="card m-2" style="width: 18rem;">
-  <img src="/media/{{ element.first_preview }}" class="card-img-top" style="width: 286px; height: 160px">
+  <img src="/media/{{ element.first_preview }}" class="card-img-top" style="width: 286px; height: max-content">
   <div class="card-body">
     <h5 class="card-title">{{ element.title }}</h5>
     <p class="card-text">{{ element.text }}</p>
@@ -23,7 +23,7 @@
 </div>
 <style>
   .card{
-  height: 600px;
+  height: 750px;
   }
   .card-text{
   height: 200px;

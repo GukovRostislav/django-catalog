@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse_lazy
@@ -5,7 +7,6 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-
 
 from .forms import *
 from .models import *
@@ -43,7 +44,6 @@ def projects(request):
 
 def project(request, id):
     project = Projects.objects.get(id=id)
-    print(project.preview)
     return render(request, 'auth2/project.html', {'project': project})
 
 
@@ -64,8 +64,21 @@ def consultation(request):
 
 
 @login_required
-def s(request):
-    return render(request, "auth2/index.html")
+def create_project(request):
+    print(request.user)
+    if request.method == "POST":
+        form = ProjectCreationForm(request.POST, request.FILES)
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            #instance.user = request.user
+            return redirect("projects")
+        else:
+            print(form.errors)
+    else:
+        form = ProjectCreationForm()
+
+    return render(request, "auth2/create_project.html", {'form': ProjectCreationForm(initial={'author': request.user})})
 
 
 

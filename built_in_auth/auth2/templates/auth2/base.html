@@ -55,14 +55,21 @@
     </div>
     <p>
       {% if user.is_authenticated %}
-      <div class="d-flex flex-column">
+      <a href="{% url 'create_project' %}" style="margin-bottom: -25px;">Create new project</a>
+      <div class="d-flex flex-column" style="margin-left: 20px;">
         Hi {{ user.username }}!
             <a href='{% url "logout" %}'>Logout</a>
+            
           </div>
+          
       {% else %}
-            <p>You are not logged in</p>
+      <div class="d-flex flex-column">
+            <p style="margin: 0px">You are not logged in</p>
+          <div>
             <a href="{% url 'login' %}">Login </a> |
             <a href="{% url 'sign_up_e' %}"> Sign-up</a>
+              </div>
+          </div>
       {% endif %}
   </p>
   </div>

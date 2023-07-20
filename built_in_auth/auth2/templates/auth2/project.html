@@ -1,7 +1,7 @@
 {% extends "auth2/base.html" %}
 {% block content %}
 <h1>{{ project.title }}</h1>
-<img src="{{ project.preview.url }}">
+<img src="{{ project.preview.url }}" style="max-width: 100%;">
 <p>{{ project.text }}</p>
 <h3>{{ project.created_date }}</h3>
 <p> 

@@ -32,6 +32,12 @@ class Projects(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=now())
     likes = models.IntegerField(default=0)
+    author = models.ForeignKey(
+        blank=True,
+        to=CustomUser,
+        on_delete=models.CASCADE,
+        default=0,
+    )
     def __str__(self):
         return self.title
 
