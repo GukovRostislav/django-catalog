@@ -10,6 +10,8 @@ urlpatterns = [
     path('contacts/', contacts, name='contacts'),
     path('projects/', projects, name='projects'),
     path('projects/create/', create_project, name='create_project'),
+    path('projects/like/<int:id>', like, name='like'),
     path('projects/<int:id>', project, name='project'),
     path('consultation/', consultation, name='consultation'),
+    path('request_leave/', request_leave, name='request_leave'),
 ]

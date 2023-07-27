@@ -31,7 +31,8 @@ class Projects(models.Model):
     title = models.CharField(max_length=50)
     text = models.TextField()
     created_date = models.DateTimeField(default=now())
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(CustomUser, related_name='like', default=None, blank=True)
+    likes_count = models.IntegerField(default=0)
     author = models.ForeignKey(
         blank=True,
         to=CustomUser,
@@ -54,4 +55,13 @@ class Comments(models.Model):
     )
 
 
-
+class Requests(models.Model):
+    author = models.ForeignKey(
+        blank=True,
+        to=CustomUser,
+        on_delete=models.CASCADE,
+        default=0,
+    )
+    text = models.TextField()
+    sending_date = models.DateTimeField(default=now())
+    phone = models.CharField(max_length=15)

@@ -119,3 +119,29 @@ class ProjectCreationForm(forms.ModelForm):
     class Meta:
         model = Projects
         fields = "__all__"
+
+
+class RequestLeaveForm(forms.ModelForm):
+    author = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        widget=forms.HiddenInput()
+    )
+    text = forms.CharField(
+        label="Text",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'floatingInput',
+        }
+        )
+    )
+    phone = forms.CharField(
+        label='Phone',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'floatingInput',}
+        ),
+    )
+    sending_date = forms.DateTimeField(
+        initial=datetime.date.today(),
+        widget=forms.HiddenInput,
+    )

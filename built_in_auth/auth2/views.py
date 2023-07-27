@@ -1,12 +1,11 @@
 import datetime
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, get_object_or_404
 
 from .forms import *
 from .models import *
@@ -49,13 +48,11 @@ def project(request, id):
 
 def catalog(request):
     catalog = Catalog.objects.all()
-    print(catalog)
     return render(request, 'auth2/catalog.html', {'catalog': catalog})
 
 
 def catalog_product(request, id):
     catalog = Catalog.objects.get(id=id)
-    print(catalog.first_preview)
     return render(request, 'auth2/catalog_product.html', {'catalog': catalog})
 
 
@@ -64,11 +61,14 @@ def consultation(request):
 
 
 @login_required
+def request_leave(request):
+    return render(request, "auth2/request_leave.html", {'form': RequestLeaveForm()})
+
+
+@login_required
 def create_project(request):
-    print(request.user)
     if request.method == "POST":
         form = ProjectCreationForm(request.POST, request.FILES)
-        print(request.POST)
         if form.is_valid():
             form.save()
             #instance.user = request.user
@@ -81,4 +81,22 @@ def create_project(request):
     return render(request, "auth2/create_project.html", {'form': ProjectCreationForm(initial={'author': request.user})})
 
 
+@login_required
+def like(request, id):
+    if request.POST.get('action') == 'post':
+        result = ''
+        project_id = id
+        project = get_object_or_404(Projects, id=project_id)
+        if project.likes.filter(id=request.user.id).exists():
+            project.likes.remove(request.user)
+            project.likes_count -= 1
+            result = project.likes_count
+            project.save()
+        else:
+            project.likes.add(request.user)
+            project.likes_count += 1
+            result = project.likes_count
+            project.save()
+
+        return JsonResponse({'result': result, })
 
