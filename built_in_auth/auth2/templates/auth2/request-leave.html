@@ -1,1 +1,73 @@
 {% extends "auth2/base.html" %}
+{% block content %}
+
+<main class="form-signin" style="margin-left: 25vw;margin-right: 0px;margin-top: 100px;">
+
+    <form action="{% url 'request_leave' %}" method="post" enctype="multipart/form-data" class="d-flex flex-column">
+    <h1 class="h3 mb-3 fw-normal">Request</h1>
+
+    {% csrf_token %}
+
+     {{ form }}
+    <button class="w-33 btn btn-lg btn-dark" style='margin-top: 25px; width: 33vw' type="submit">Send Request</button>
+  </form>
+    {% if is_success %}
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="/media/ok.png" class="rounded me-2" alt="..." style="width: 20px; height: 20px;">
+      <strong class="me-auto">Site</strong>
+      <small>Now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Request sent successfully
+    </div>
+  </div>
+</div>
+    <b id="liveToastBtn">qweqwe</b>
+    <script>
+    const toastTrigger = document.getElementById('liveToastBtn')
+    const toastLiveExample = document.getElementById('liveToast');
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+  toastTrigger.addEventListener('load', () => {
+    toastBootstrap.show()
+  })
+    </script>
+    {% endif %}
+
+
+
+
+
+
+
+</main>
+<style>
+    #id_phone{
+    width: 33vw;
+    border: solid 2px black;
+    border-radius: 3px;
+    height: 35px;
+    font-family:  Montserrat;
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+}
+#id_text{
+    width: 33vw;
+    border: solid 2px black;
+    border-radius: 3px;
+    height: 275px;
+    font-family:  Montserrat;
+    text-align: start;
+    font-size: 15px;
+    vertical-align: bottom;
+    padding: 15px;
+}
+.btn{
+    width: 33vw;
+}
+</style>
+{% endblock content %}

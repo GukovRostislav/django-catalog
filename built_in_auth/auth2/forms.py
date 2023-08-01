@@ -1,9 +1,9 @@
 import datetime
-
+from django.forms import ModelForm, Textarea
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, UsernameField
 from .models import CustomUser
-from .models import Projects
+from .models import Projects, Requests
 from django.utils.timezone import now
 
 
@@ -128,20 +128,24 @@ class RequestLeaveForm(forms.ModelForm):
     )
     text = forms.CharField(
         label="Text",
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'id': 'floatingInput',
-        }
-        )
+        widget=Textarea(attrs={"maxlength": "500",
+                               'class': 'form-control',
+                               }
+                        )
     )
     phone = forms.CharField(
         label='Phone',
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'id': 'floatingInput',}
+            'id': 'id_phone',
+            }
         ),
     )
     sending_date = forms.DateTimeField(
         initial=datetime.date.today(),
         widget=forms.HiddenInput,
     )
+
+    class Meta:
+        model = Requests
+        fields = "__all__"

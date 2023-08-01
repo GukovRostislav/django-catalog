@@ -62,7 +62,20 @@ def consultation(request):
 
 @login_required
 def request_leave(request):
-    return render(request, "auth2/request_leave.html", {'form': RequestLeaveForm()})
+    if request.method == "POST":
+        form = RequestLeaveForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "auth2/request-leave.html", {
+                'form': RequestLeaveForm(initial={'author': request.user}),
+                'is_success': True
+            }
+            )
+        else:
+            print(form.errors)
+    else:
+        form = RequestLeaveForm()
+    return render(request, "auth2/request-leave.html", {'form': RequestLeaveForm(initial={'author': request.user}),'is_success': False})
 
 
 @login_required
